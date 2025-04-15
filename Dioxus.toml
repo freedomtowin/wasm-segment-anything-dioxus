@@ -1,0 +1,51 @@
+[application]
+
+# App (Project) Name
+name = "segment-anything"
+
+# Dioxus App Default Platform
+# desktop, web
+default_platform = "desktop"
+
+# `build` & `serve` dist path
+out_dir = "dist"
+
+# assets file folder
+asset_dir = "assets"
+
+[web.app]
+
+# HTML title tag content
+title = "segment-anything"
+
+[web.watcher]
+
+# when watcher trigger, regenerate the `index.html`
+reload_html = true
+
+# which files or dirs will be watcher monitoring
+watch_path = ["src", "assets"]
+
+# include `assets` in web platform
+[web.resource]
+
+# CSS style file
+style = ["/assets/segment_anything.css", "/assets/sidebar.css", "/assets/dist.css"]
+
+icon = []
+
+resources = []
+
+# Javascript code file
+script = []
+
+[web.resource.dev]
+
+# Javascript code file
+# serve: [dev-server] only
+script = []
+
+[bundle]
+identifier = "com.dioxuslabs"
+publisher = "DioxusLabs"
+icon = ["/assets/icon.ico"]

@@ -1,0 +1,103 @@
+[package]
+name = "segment-anything"
+authors = ["Rohan Kotwani", "https://www.linkedin.com/in/rkotwani/"]
+version = "0.1.1"
+edition = "2021"
+
+[dependencies]
+pretty_env_logger = "0.5.0"
+
+anyhow = "1.0.52"
+
+dioxus = {version = "0.6.3", features=["web", "fullstack" , "router"]}
+
+getrandom_0_2 = { package = "getrandom", version = "0.2.15", features = ["js"] }
+getrandom = { version = "0.3.2", features = ["wasm_js"] }
+
+
+
+candle-core = { version = "0.8.2" }
+candle-nn = { version = "0.8.2" }
+candle-transformers = { version = "0.8.2" }
+
+# Candle dev package
+# candle-core = { git = "https://github.com/freedomtowin/candle", rev = "20b4770",  features = ["wgpu"]}
+# candle-nn = { git = "https://github.com/freedomtowin/candle", rev = "20b4770" , features = ["wgpu"]}
+# candle-transformers = { git = "https://github.com/freedomtowin/candle", rev = "20b4770" , features = ["wgpu"]} 
+# candle-core = { git = "https://github.com//KimHenrikOtte/candle.git", branch = "wgpu_cleanup", features = ["wgpu"]}
+# candle-nn = { git = "https://github.com//KimHenrikOtte/candle.git", branch = "wgpu_cleanup", features = ["wgpu"]}
+# candle-transformers = { git = "https://github.com//KimHenrikOtte/candle.git", branch = "wgpu_cleanup", features = ["wgpu"]}
+
+serde = {version = "1.0.217", features = ["derive"]}
+js-sys = "0.3.77"
+web-sys = {version = "0.3.77", features = [
+    "HtmlElement",
+    "Window",
+    "Document",
+    "Element",
+    "Range",
+    "Selection",
+    "Blob", "Url", "HtmlAnchorElement"
+    ]}
+
+# candle-core = { version = "0.8.2", features = ["cuda"] }
+# candle-nn = { version = "0.8.2", features = ["cuda"] }
+
+
+# candle-transformers = { version = "0.8.2" }
+
+
+ 
+# accelerate-src = { version = "0.3.2", optional = true }
+# intel-mkl-src = { version = "0.8.1", features = ["mkl-static-lp64-iomp"], optional = true }
+# cudarc = { version = "0.13.3", features = ["f16", "cuda-version-from-build-system"], optional = true }
+# half = { version = "2.3.1", features = ["num-traits", "use-intrinsics", "rand_distr"], optional = true }
+
+thiserror = "2.0.7"
+clap = "4.5.27"
+tracing = "0.1.37"
+image = "0.25.5"
+rand = "0.9.0"
+base64 = "0.22.1"
+reqwest = {version = "0.12.12", features = ["blocking"]}
+
+
+# web-sys = {version = "0.3.77", features = [
+#     "HtmlElement",
+#     "Window",
+#     "Document",
+#     "Element",
+#     "Range",
+#     "Selection"
+#     ]}
+# wasm-bindgen = "0.2.100"
+
+
+[features]
+web = ["dioxus/web"]
+# accelerate = ["dep:accelerate-src", "candle-core/accelerate", "candle-nn/accelerate", "candle-transformers/accelerate"]
+# cuda = ["candle-core/cuda", "candle-nn/cuda", "candle-transformers/cuda"]
+# cudnn = ["candle-core/cudnn"]
+# mkl = ["dep:intel-mkl-src", "candle-core/mkl", "candle-nn/mkl", "candle-transformers/mkl"]
+# nccl = ["cuda", "cudarc/nccl", "dep:half"]
+# metal = ["candle-core/metal", "candle-nn/metal", "candle-transformers/metal"]
+
+
+
+[build-dependencies]
+anyhow = "1.0.86"
+# bindgen_cuda = { version = "0.1.1", optional = true }
+log = "0.4"
+
+
+[profile]
+
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1
+
+[profile.server-dev]
+inherits = "dev"
+
+[profile.android-dev]
+inherits = "dev"

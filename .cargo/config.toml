@@ -1,0 +1,6 @@
+[target.wasm32-unknown-unknown]
+rustflags = [
+  "-C", "target-feature=+atomics,+bulk-memory,+mutable-globals",
+  "--cfg", "getrandom_backend=\"wasm_js\"",
+  "--cfg", "getrandom_js",  # if needed by older getrandom logic
+]
