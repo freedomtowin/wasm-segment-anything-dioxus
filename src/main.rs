@@ -59,7 +59,7 @@ fn SegmentAnythingApp() -> Element {
 
 
     let is_model_loaded = use_signal(|| false);
-    let should_set_embeddings = use_signal(|| false);
+    let set_embeddings_flag = use_signal(|| false);
 
     let model_name = use_signal(|| None as Option<String>);
     // let undo_last_point = use_signal(|| true);
@@ -134,7 +134,7 @@ fn SegmentAnythingApp() -> Element {
 
         let mut sam_model = sam_model.clone();
         let mut is_model_loaded = is_model_loaded.clone();
-        let mut should_set_embeddings = should_set_embeddings.clone();
+        let mut set_embeddings_flag = set_embeddings_flag.clone();
         let mut message_state = message_state.clone();
 
         let should_load = match maybe_model_name {
@@ -160,8 +160,10 @@ fn SegmentAnythingApp() -> Element {
 
         let mut mask_image = mask_image.clone();
         let mut base_image_bytes = base_image_bytes.clone();
-        let mut should_set_embeddings = should_set_embeddings.clone();
-
+        let mut set_embeddings_flag = set_embeddings_flag.clone();
+        
+        set_embeddings_flag.set(false);
+        
         match &*base_image.read() {
             ImageState::Ready(img) => {
                 // Set Mask
@@ -172,7 +174,7 @@ fn SegmentAnythingApp() -> Element {
                 match img.write_to(&mut Cursor::new(&mut buf), ImageFormat::Png) {
                     Ok(_) => {
                         let encoded = general_purpose::STANDARD.encode(&buf);
-                        should_set_embeddings.set(true);
+                        set_embeddings_flag.set(true);
                         base_image_bytes.set(format!("data:image/png;base64,{}", encoded));
 
                     }
@@ -251,7 +253,8 @@ fn SegmentAnythingApp() -> Element {
     let load_embeddings = use_resource(move || {
         // let mut sam_settings = sam_settings.clone();
 
-        let should_set_embeddings = *should_set_embeddings.read();
+        let should_set_embeddings= *set_embeddings_flag.read();
+        let mut set_embeddings_flag = set_embeddings_flag.clone();
         let is_model_loaded = *is_model_loaded.read();
         let mut sam_model = sam_model.clone();
         let mut message_state = message_state.clone();
@@ -284,7 +287,7 @@ fn SegmentAnythingApp() -> Element {
                                 info!("Set embeddings failed: {}", e);
                             }
                             info!("[Model State] loaded");
-                            message_state.set(MessageState::Ready);
+                            message_state.set(MessageState::Ready)
  
                         }
                         ModelState::Error(e) => info!("Model error: {}", e),
@@ -373,7 +376,7 @@ fn SegmentAnythingApp() -> Element {
                 mask: mask_image,
                 message_state: message_state,
                 toggle_mask: toggle_mask,
-                data: sam_data
+                sam_data: sam_data
              }
             // match *download_state.read() {
             //     Some(Ok(ref bytes)) => rsx! { "Downloaded {bytes.len()} bytes" },

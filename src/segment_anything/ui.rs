@@ -5,8 +5,21 @@ use rand::{rng, Rng, random_range};
 use base64::{engine::general_purpose, Engine as _};
 use std::io::Cursor;
 use dioxus::logger::tracing::info;
+use serde_json;
 
 use super::model::*;
+use super::lasso::{lasso};
+
+
+use std::pin::Pin;
+use std::future::Future;
+
+
+#[derive(serde::Deserialize)]
+struct Rect {
+    width: f64,
+    height: f64,
+}
 
 #[derive(Props, Debug, PartialEq, Clone)]
 pub struct ImageContainerProps {
@@ -56,7 +69,46 @@ pub fn ImageContainer(mut props: ImageContainerProps) -> Element {
     });
 
     // let mut click_positions = use_signal(|| Vec::<(f64, f64)>::new());
+    let mut get_render_position_flag = use_signal(|| false);
     let mut rendered_position = use_signal(|| RenderedPosition { x: 0, y: 0 });
+
+    let get_render_positions = move || {
+        async move {
+            let js_code = format!(
+                r#"
+                let elem = document.getElementById('sam-img');
+                let rect = elem.getBoundingClientRect();
+                return {{ width: rect.width, height: rect.height }};
+                "#,
+            );
+            
+
+            match document::eval(&js_code).await {
+                Ok(result) => {
+                    let rect: Rect = serde_json::from_value(result).unwrap();
+                    // println!("Width: {}, Height: {}", rect.width, rect.height);
+                    rendered_position.set(RenderedPosition {
+                        x: rect.width as u32,
+                        y: rect.height as u32,
+                    });
+                }
+                Err(e) => {
+                    println!("JS evaluation error: {:?}", e)
+            
+                }
+            }
+        }
+    };
+
+    // use_effect(move || {
+
+    //     let get_render_position_flag = get_render_position_flag.read().clone();
+
+
+    //     }
+
+    // });
+
 
     let handle_click = move |evt: MouseEvent| {
 
@@ -152,9 +204,13 @@ pub fn ImageContainer(mut props: ImageContainerProps) -> Element {
 
                         let mask = model.segment_from_points(points.clone()).await.unwrap();
                         // Save the base mask 
-                        props.mask_image.set(MaskState::Ready(mask.clone()));
 
                         if let Some(img) = &*display_image.read() {
+
+                            
+                            let mask_bytes = lasso(img, &mask, points.clone()).await;
+                            let mask = image::load_from_memory(&mask_bytes).unwrap();
+                            props.mask_image.set(MaskState::Ready(mask.clone()));
                             
                             let masked_image = overlay_mask(img.clone(), mask);
 
@@ -194,6 +250,7 @@ pub fn ImageContainer(mut props: ImageContainerProps) -> Element {
                             class: "sa-img",
                             src: "{*props.image_bytes.read()}",
                             onclick: handle_click,
+                            onload: move |evt| { async move { get_render_positions().await;} },
                             onresize: move |element| {
                                 if let Ok(rect) = element.get_border_box_size() {
                                     rendered_position.set(RenderedPosition {

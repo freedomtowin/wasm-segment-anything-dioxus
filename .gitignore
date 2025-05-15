@@ -10,3 +10,4 @@ package-lock.json
 
 src/segment_anything/model_gpu.rs
 src/segment_anything/ui_gpu.rs
+src/segment_anything/grabcut_copy.rs

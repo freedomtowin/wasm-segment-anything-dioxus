@@ -10,6 +10,8 @@ use image::DynamicImage;
 use dioxus::logger::tracing::info;
 use serde;
 
+// use super::grabcut::grabcut;
+
 #[derive(serde::Serialize, serde::Deserialize)]
 struct Mask {
     iou: f32,

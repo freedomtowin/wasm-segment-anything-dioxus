@@ -10,7 +10,7 @@ pub struct SideBarProps {
     pub mask: Signal<MaskState>,
     pub message_state: Signal<MessageState>,
     pub toggle_mask: Signal<bool>,
-    pub data: SegmentAnythingData
+    pub sam_data: SegmentAnythingData
 }
 
 
@@ -25,10 +25,10 @@ pub fn SideBar(mut props: SideBarProps) -> Element {
             class: "w-64 bg-gray-100 p-4 border-r border-gray-200",
             div {
                 class: "sa-container-wrapper",
-                SideBarDescription { data: props.data }
+                SideBarDescription { data: props.sam_data }
                 ControlBar { 
                     toggle_mask: props.toggle_mask,
-                    data: props.data,
+                    data: props.sam_data,
                     message_state: props.message_state,
                     image: props.image,
                     mask: props.mask,
