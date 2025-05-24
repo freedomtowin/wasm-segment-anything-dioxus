@@ -156,6 +156,7 @@ fn SegmentAnythingApp() -> Element {
         };
     });
 
+    // Set mask image and bytes image
     use_effect(move|| {
 
         let mut mask_image = mask_image.clone();
