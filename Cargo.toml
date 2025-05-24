@@ -9,7 +9,7 @@ pretty_env_logger = "0.5.0"
 
 anyhow = "1.0.52"
 
-dioxus = {version = "0.6.3", features=["web", "fullstack" , "router"]}
+dioxus = {git = "https://github.com/DioxusLabs/dioxus.git", features=["web", "router"]}
 
 getrandom_0_2 = { package = "getrandom", version = "0.2.15", features = ["js"] }
 getrandom = { version = "0.3.2", features = ["wasm_js"] }
@@ -77,16 +77,8 @@ serde_json = "1.0.140"
 
 
 [features]
+default = ["web"]
 web = ["dioxus/web"]
-server = ["dioxus/server"]
-# accelerate = ["dep:accelerate-src", "candle-core/accelerate", "candle-nn/accelerate", "candle-transformers/accelerate"]
-# cuda = ["candle-core/cuda", "candle-nn/cuda", "candle-transformers/cuda"]
-# cudnn = ["candle-core/cudnn"]
-# mkl = ["dep:intel-mkl-src", "candle-core/mkl", "candle-nn/mkl", "candle-transformers/mkl"]
-# nccl = ["cuda", "cudarc/nccl", "dep:half"]
-# metal = ["candle-core/metal", "candle-nn/metal", "candle-transformers/metal"]
-
-
 
 [build-dependencies]
 anyhow = "1.0.86"

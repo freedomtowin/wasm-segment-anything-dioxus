@@ -5,7 +5,7 @@ name = "segment-anything"
 
 # Dioxus App Default Platform
 # desktop, web
-default_platform = "desktop"
+default_platform = "web"
 
 # `build` & `serve` dist path
 out_dir = "dist"
@@ -17,6 +17,7 @@ asset_dir = "assets"
 
 # HTML title tag content
 title = "segment-anything"
+base_path = "wasm-segment-anything-dioxus"
 
 [web.watcher]
 

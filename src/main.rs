@@ -11,7 +11,7 @@ use base64::{engine::general_purpose, Engine as _};
 use std::io::Cursor;
 
 
-use dioxus::router::prelude::*;
+// use dioxus::router::prelude::*;
 use dioxus::prelude::*;
 use dioxus::logger::tracing::info;
 use image::{DynamicImage, GenericImageView, ImageBuffer, ImageFormat, Rgba};
@@ -156,6 +156,7 @@ fn SegmentAnythingApp() -> Element {
         };
     });
 
+    // Set mask image and bytes image
     use_effect(move|| {
 
         let mut mask_image = mask_image.clone();
