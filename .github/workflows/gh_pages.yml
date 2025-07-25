@@ -19,15 +19,15 @@ jobs:
       - uses: ilammy/setup-nasm@v1
       - uses: taiki-e/install-action@cargo-binstall
       - name: Install dioxus-cli
-        run: cargo binstall -y dioxus-cli@0.7.0-alpha.3 --locked --force
+        run: cargo binstall -y dioxus-cli@0.7.0-alpha.2 --locked --force
       - uses: actions/checkout@v2
       - name: Build
-        run:  dx build --platform web
+        run:  dx build --release --platform web
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: target/dx/segment-anything/debug/web/public # The folder the action should deploy.
+          folder: target/dx/segment-anything/debug/release/public # The folder the action should deploy.
           target-folder: docs
           # clean: false # don't scrub docs
 
